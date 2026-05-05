@@ -1,6 +1,8 @@
 # 👣 TinySteps - Baby Milestone Tracker
 
-A full-stack web app that lets you track your baby's milestones. Built with React, Node.js/Express, and PostgreSQL.
+A full-stack web app for tracking your baby's milestones. Built with React, Node.js/Express, and PostgreSQL.
+
+🔗 **Live App:** [https://tinysteps-backend-vdgf.onrender.com](https://tinysteps-backend-vdgf.onrender.com)
 
 ---
 
@@ -22,73 +24,49 @@ A full-stack web app that lets you track your baby's milestones. Built with Reac
 - **Database:** PostgreSQL
 - **Auth:** Google OAuth 2.0 via Passport.js
 - **External API:** NewsAPI (baby/parenting news)
+- **Deployment:** Render
 
 ---
 
 ## API Routes
 
-| Method | Route                        | Description               |
-|--------|------------------------------|---------------------------|
-| GET    | /milestones                  | Get all milestones        |
-| GET    | /milestones/:id              | Get one milestone by ID   |
-| GET    | /milestones/kid/:kidName     | Get milestones for a kid  |
-| POST   | /milestones                  | Create a new milestone    |
-| PUT    | /milestones/:id              | Update a milestone        |
-| DELETE | /milestones/:id              | Delete a milestone        |
-| GET    | /news                        | Get baby news articles    |
-| GET    | /auth/google                 | Start Google OAuth login  |
-| GET    | /auth/google/callback        | Google OAuth callback     |
-| GET    | /auth/me                     | Get current user session  |
-| POST   | /auth/logout                 | Log out                   |
+| Method | Route                    | Description              |
+| ------ | ------------------------ | ------------------------ |
+| GET    | /milestones              | Get all milestones       |
+| GET    | /milestones/:id          | Get one milestone by ID  |
+| GET    | /milestones/kid/:kidName | Get milestones for a kid |
+| POST   | /milestones              | Create a new milestone   |
+| PUT    | /milestones/:id          | Update a milestone       |
+| DELETE | /milestones/:id          | Delete a milestone       |
+| GET    | /news                    | Get baby news articles   |
+| GET    | /auth/google             | Start Google OAuth login |
+| GET    | /auth/google/callback    | Google OAuth callback    |
+| GET    | /auth/me                 | Get current user session |
+| POST   | /auth/logout             | Log out                  |
 
 ---
 
-## Setup Instructions
+## Reflection
 
-### 1. Create the database
+### Design Choices
 
-```bash
-psql -U your_username -d your_database -f setup.sql
-```
+I chose React for the frontend because I have had prior experience with MVC frameworks and therefore wanted to get better with React.
+For the backend I went with Node.js and Express.
+For authentication I used Google OAuth.
 
-### 2. Configure backend environment variables
+### Challenges
 
-Edit `express-backend/.env`:
+The biggest challenge was definitely getting everything hosted. I went down a rabbit hole of trying to host the backend and the fronend seperately, which led to issues with cookies and cors. I abandoned that route and just got both the backend and the frontend through the same domain.
 
-```
-DATABASE_URL=your_postgres_connection_string
-clientID=your_google_client_id
-clientSecret=your_google_client_secret
-CLIENT_BASE_URL=http://localhost:5173
-NEWS_API_KEY=your_newsapi_key
-PORT=3000
-```
+### Learning Outcomes
 
-- Get Google OAuth credentials at: https://console.cloud.google.com
-- Get a free NewsAPI key at: https://newsapi.org
+This project taught me a lot about how full-stack apps actually fit together beyond just writing the code. Deployment introduced a whole layer of complexity that doesn't exist in local development — environment variables, CORS, cookie security, and how platforms like Render work. I learned that things that work perfectly on localhost can break in production for reasons that have nothing to do with your code being wrong.
 
-### 3. Configure frontend environment variables
+I also got a much better understanding of how OAuth works end-to-end, how session cookies are managed across requests, and why same-origin policy exists in the first place. The debugging process of tracing a request through the Network tab, checking response headers, and reading server logs was valuable.
 
-Edit `react-frontend-client/.env`:
+### Future Work
 
-```
-VITE_API_URL=http://localhost:3000
-```
-
-### 4. Install dependencies and run
-
-**Backend:**
-```bash
-cd express-backend
-npm install
-node server.js
-```
-
-**Frontend:**
-```bash
-cd react-frontend-client
-npm install
-npm run dev
-```
-
-Then open http://localhost:5173 in your browser.
+- **Multiple users/families** — right now the app shows all milestones to any logged in user. A real version would scope milestones to the logged in family so different users only see their own data.
+- **Milestone categories** — being able to tag milestones (first words, motor skills, social, etc.) and filter by category.
+- **Timeline view** — a visual timeline instead of just a list/table would be a nicer way to see a kid's milestones at a glance.
+- **Production session store** — replace the in-memory session store with `connect-pg-simple` so sessions persist properly across server restarts.
