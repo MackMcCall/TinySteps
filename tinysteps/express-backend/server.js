@@ -2,7 +2,7 @@
 "use strict";
 const express = require("express");
 const app = express();
-app.set("trust proxy", 1);
+const path = require("path");
 
 const multer = require("multer");
 app.use(multer().none());
@@ -11,6 +11,8 @@ app.use(express.json());
 app.use(express.static("public"));
 
 require("dotenv").config();
+
+app.set("trust proxy", 1);
 
 const session = require("express-session");
 const passport = require("passport");
@@ -46,6 +48,14 @@ app.use("/milestones", milestoneRoutes);
 app.use("/users", userRoutes);
 app.use("/news", newsRoutes);
 app.use("/auth", require("./auth/authRoute"));
+
+app.use(express.static(path.join(__dirname, "../react-frontend-client/dist")));
+
+app.get("*", (req, res) => {
+    res.sendFile(
+        path.join(__dirname, "../react-frontend-client/dist/index.html"),
+    );
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, function () {
